@@ -7,6 +7,6 @@ export function Auth(role: TypeRole = 'user') {
 	return applyDecorators(
 		role === 'admin'
 			? UseGuards(JwtAuthGuard, OnlyAdminGuard)
-			: UseGuards(JwtAuthGuard),
+			: UseGuards(JwtAuthGuard)
 	);
 }

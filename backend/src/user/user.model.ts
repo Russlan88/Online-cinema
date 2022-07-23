@@ -15,5 +15,5 @@ export class UserModel extends TimeStamps {
 	public isAdmin?: boolean;
 
 	// @prop({ default: [], ref: () => MovieModel })
-	// favorites?: Ref<MovieModel>[]
+	// favorites?: Ref<MovieModel>[];
 }

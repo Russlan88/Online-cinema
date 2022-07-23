@@ -11,11 +11,12 @@ import { UserModel } from '../user/user.model';
 @Injectable()
 export class AuthService {
 	constructor(
+		// tslint:disable-next-line:no-shadowed-variable
 		@InjectModel(UserModel) private readonly UserModel: ModelType<UserModel>,
-		private readonly jwtService: JwtService,
+		private readonly jwtService: JwtService
 	) {}
 
-	async login({ email, password }: AuthDto) {
+	public async login({ email, password }: AuthDto) {
 		const user = await this.validateUser(email, password);
 
 		const tokens = await this.issueTokenPair(String(user._id));
@@ -26,7 +27,7 @@ export class AuthService {
 		};
 	}
 
-	async register({ email, password }: AuthDto) {
+	public async register({ email, password }: AuthDto) {
 		const salt = await genSalt(10);
 		const newUser = new this.UserModel({
 			email,
@@ -42,7 +43,7 @@ export class AuthService {
 		};
 	}
 
-	async getNewTokens({ refreshToken }: RefreshTokenDto) {
+	public async getNewTokens({ refreshToken }: RefreshTokenDto) {
 		if (!refreshToken) throw new UnauthorizedException('Please sign in!');
 
 		const result = await this.jwtService.verifyAsync(refreshToken);
@@ -59,11 +60,14 @@ export class AuthService {
 		};
 	}
 
-	async findByEmail(email: string) {
+	public async findByEmail(email: string) {
 		return this.UserModel.findOne({ email }).exec();
 	}
 
-	async validateUser(email: string, password: string): Promise<UserModel> {
+	public async validateUser(
+		email: string,
+		password: string
+	): Promise<UserModel> {
 		const user = await this.findByEmail(email);
 		if (!user) throw new UnauthorizedException('User not found');
 
@@ -73,7 +77,7 @@ export class AuthService {
 		return user;
 	}
 
-	async issueTokenPair(userId: string) {
+	public async issueTokenPair(userId: string) {
 		const data = { _id: userId };
 
 		const refreshToken = await this.jwtService.signAsync(data, {
@@ -87,7 +91,7 @@ export class AuthService {
 		return { refreshToken, accessToken };
 	}
 
-	returnUserFields(user: UserModel) {
+	public returnUserFields(user: UserModel) {
 		return {
 			_id: user._id,
 			email: user.email,

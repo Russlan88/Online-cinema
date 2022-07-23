@@ -4,8 +4,6 @@ import {
 	NotFoundException,
 } from '@nestjs/common';
 import { ModelType, DocumentType } from '@typegoose/typegoose/lib/types';
-import { genSalt, hash } from 'bcryptjs';
-import { Types } from 'mongoose';
 import { InjectModel } from 'nestjs-typegoose';
 import { UserModel } from './user.model';
 

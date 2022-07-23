@@ -11,7 +11,6 @@ import { UserModel } from '../../user/user.model';
 export class JwtStrategy extends PassportStrategy(Strategy) {
 	constructor(
 		private readonly configService: ConfigService,
-		// tslint:disable-next-line:no-shadowed-variable
 		@InjectModel(UserModel) private readonly UserModel: ModelType<UserModel>
 	) {
 		super({

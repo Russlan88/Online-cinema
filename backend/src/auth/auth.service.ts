@@ -11,7 +11,6 @@ import { UserModel } from '../user/user.model';
 @Injectable()
 export class AuthService {
 	constructor(
-		// tslint:disable-next-line:no-shadowed-variable
 		@InjectModel(UserModel) private readonly UserModel: ModelType<UserModel>,
 		private readonly jwtService: JwtService
 	) {}

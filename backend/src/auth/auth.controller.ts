@@ -13,7 +13,6 @@ import { AuthService } from './auth.service';
 
 @Controller('auth')
 export class AuthController {
-	// tslint:disable-next-line:no-shadowed-variable
 	constructor(private readonly AuthService: AuthService) {}
 
 	@UsePipes(new ValidationPipe())

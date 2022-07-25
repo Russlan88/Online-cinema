@@ -2,4 +2,4 @@
 
 # online-cinema
 
-[] setting invaironment
+<img src='./preview.webp' />

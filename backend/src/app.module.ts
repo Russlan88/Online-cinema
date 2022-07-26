@@ -10,6 +10,7 @@ import { UserModule } from './user/user.module';
 
 import { TypegooseModule } from 'nestjs-typegoose';
 import { GenreModule } from './genre/genre.module';
+import { FilesModule } from './files/files.module';
 
 @Module({
 	imports: [
@@ -22,6 +23,7 @@ import { GenreModule } from './genre/genre.module';
 		UserModule,
 		AuthModule,
 		GenreModule,
+		FilesModule,
 	],
 	controllers: [AppController],
 	providers: [AppService],

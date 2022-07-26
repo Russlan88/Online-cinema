@@ -11,6 +11,7 @@ import { UserModule } from './user/user.module';
 import { TypegooseModule } from 'nestjs-typegoose';
 import { GenreModule } from './genre/genre.module';
 import { FilesModule } from './files/files.module';
+import { ActorModule } from './actor/actor.module';
 
 @Module({
 	imports: [
@@ -24,6 +25,7 @@ import { FilesModule } from './files/files.module';
 		AuthModule,
 		GenreModule,
 		FilesModule,
+		ActorModule,
 	],
 	controllers: [AppController],
 	providers: [AppService],

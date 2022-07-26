@@ -12,6 +12,7 @@ import { TypegooseModule } from 'nestjs-typegoose';
 import { GenreModule } from './genre/genre.module';
 import { FilesModule } from './files/files.module';
 import { ActorModule } from './actor/actor.module';
+import { MovieModule } from './movie/movie.module';
 
 @Module({
 	imports: [
@@ -26,6 +27,7 @@ import { ActorModule } from './actor/actor.module';
 		GenreModule,
 		FilesModule,
 		ActorModule,
+		MovieModule,
 	],
 	controllers: [AppController],
 	providers: [AppService],

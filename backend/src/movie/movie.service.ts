@@ -2,14 +2,15 @@ import { Injectable } from '@nestjs/common';
 import { ModelType, DocumentType } from '@typegoose/typegoose/lib/types';
 import { Types } from 'mongoose';
 import { InjectModel } from 'nestjs-typegoose';
-// import { TelegramService } from 'src/telegram/telegram.service'
+import { TelegramService } from 'src/telegram/telegram.service';
 import { CreateMovieDto } from './dto/create-movie.dto';
 import { MovieModel } from './movie.model';
 
 @Injectable()
 export class MovieService {
 	constructor(
-		@InjectModel(MovieModel) private readonly movieModel: ModelType<MovieModel> // private readonly telegramService: TelegramService
+		@InjectModel(MovieModel) private readonly movieModel: ModelType<MovieModel>,
+		private readonly telegramService: TelegramService
 	) {}
 
 	async getAll(searchTerm?: string): Promise<DocumentType<MovieModel>[]> {
@@ -64,7 +65,7 @@ export class MovieService {
 			bigPoster: '',
 			actors: [],
 			genres: [],
-			description: '',
+			// description: '',
 			poster: '',
 			title: '',
 			videoUrl: '',
@@ -78,10 +79,10 @@ export class MovieService {
 		id: string,
 		dto: CreateMovieDto
 	): Promise<DocumentType<MovieModel> | null> {
-		// if (!dto.isSendTelegram) {
-		// 	await this.sendNotifications(dto);
-		// 	dto.isSendTelegram = true;
-		// }
+		if (!dto.isSendTelegram) {
+			await this.sendNotification(dto);
+			dto.isSendTelegram = true;
+		}
 
 		return this.movieModel.findByIdAndUpdate(id, dto, { new: true }).exec();
 	}
@@ -102,5 +103,25 @@ export class MovieService {
 		return this.movieModel
 			.findByIdAndUpdate(id, { rating: newRating }, { new: true })
 			.exec();
+	}
+
+	public async sendNotification(dto: CreateMovieDto) {
+		await this.telegramService.sendPhoto(
+			'https://static6.depositphotos.com/1003434/555/i/950/depositphotos_5551251-stock-photo-cinema.jpg'
+		);
+		const msg = `<b>${dto.title}</b>`;
+
+		await this.telegramService.sendMessage(msg, {
+			reply_markup: {
+				inline_keyboard: [
+					[
+						{
+							url: 'https://okkio.tv/movie/free-guy',
+							text: '🍿 Go to watch',
+						},
+					],
+				],
+			},
+		});
 	}
 }

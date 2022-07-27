@@ -27,8 +27,8 @@ export class CreateMovieDto {
 	@IsString()
 	title: string;
 
-	@IsString()
-	description: string;
+	// @IsString()
+	// description: string;
 
 	@IsObject()
 	parameters?: Parameter;
@@ -47,6 +47,6 @@ export class CreateMovieDto {
 	@IsString()
 	slug: string;
 
-	@IsBoolean()
+	// @IsBoolean()
 	isSendTelegram?: boolean;
 }

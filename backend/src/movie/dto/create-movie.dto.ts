@@ -6,7 +6,7 @@ import {
 	IsString,
 } from 'class-validator';
 
-export class Parameters {
+export class Parameter {
 	@IsNumber()
 	year: number;
 
@@ -17,7 +17,7 @@ export class Parameters {
 	country: string;
 }
 
-export class UpdateMovieDto {
+export class CreateMovieDto {
 	@IsString()
 	poster: string;
 
@@ -27,17 +27,11 @@ export class UpdateMovieDto {
 	@IsString()
 	title: string;
 
-	// @IsString()
-	// description: string;
-
 	@IsString()
-	slug: string;
+	description: string;
 
 	@IsObject()
-	parameters?: Parameters;
-
-	@IsString()
-	videoUrl: string;
+	parameters?: Parameter;
 
 	@IsArray()
 	@IsString({ each: true })
@@ -47,5 +41,12 @@ export class UpdateMovieDto {
 	@IsString({ each: true })
 	actors: string[];
 
+	@IsString()
+	videoUrl: string;
+
+	@IsString()
+	slug: string;
+
+	@IsBoolean()
 	isSendTelegram?: boolean;
 }

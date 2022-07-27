@@ -6,7 +6,7 @@ import { GenreModel } from 'src/genre/genre.model';
 
 export interface MovieModel extends Base {}
 
-export class Parameters {
+export class Parameter {
 	@prop()
 	year: number;
 
@@ -14,7 +14,7 @@ export class Parameters {
 	duration: number;
 
 	@prop()
-	country: number;
+	country: string;
 }
 
 export class MovieModel extends TimeStamps {
@@ -28,7 +28,7 @@ export class MovieModel extends TimeStamps {
 	title: string;
 
 	@prop()
-	parameters: Parameters;
+	parameters: Parameter;
 
 	@prop({ default: 4.0 })
 	rating?: number;

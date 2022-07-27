@@ -76,6 +76,6 @@ Nest is [MIT licensed](LICENSE).
 
 yarn add @nestjs/config @typegoose/typegoose mongoose nestjs-typegoose yarn add
 @nestjs/jwt passport-jwt @nestjs/passport @nestjs/passport class-validator
-passport
+passport @nestjs/serve-static app-root-path fs-extra
 
-yarn add -D @types/mongoose
+yarn add -D @types/mongoose @types/app-root-path @types/fs-extra @types/multer

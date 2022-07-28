@@ -1,6 +1,8 @@
 import { Telegram } from 'src/telegram/telegram.interface';
-// https://api.telegram.org/botIL_TOKEN_DEL_TUO_CHATBOT/getUpdates
+
+const subscribers = ['xxxxxxxxx', 'xxxxxxx', 'xxxxxxx'];
+
 export const getTelegramConfig = (): Telegram => ({
-	chatId: '1911330092',
-	token: '5444867768:AAE6DbqhFxDXFJ3BbHWJ69yy3E7-WMbgY-g',
+	chatId: subscribers.toString(),
+	token: 'xxxxxxxxxxxxxxxxxxxxxx',
 });

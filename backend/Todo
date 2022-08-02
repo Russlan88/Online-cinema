@@ -2,4 +2,16 @@ NOTE
    16. Телеграм уведомления
 REVIEW
 TODO
+import { Telegram } from 'src/telegram/telegram.interface';
+// https://api.telegram.org/botIL_TOKEN_DEL_TUO_CHATBOT/getUpdates
+
+const subscribers = ['1911330092', '5412525790', '996972523'];
+
+// 996972523 - Olesia
+// 5412525790 - mamma
+
+export const getTelegramConfig = (): Telegram => ({
+	chatId: '5412525790',
+	token: '5444867768:AAE6DbqhFxDXFJ3BbHWJ69yy3E7-WMbgY-g',
+});
 FIXME

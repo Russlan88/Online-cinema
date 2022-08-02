@@ -4,49 +4,49 @@ import {
 	IsNumber,
 	IsObject,
 	IsString,
-} from 'class-validator';
+} from 'class-validator'
 
 export class Parameter {
 	@IsNumber()
-	year: number;
+	year: number
 
 	@IsNumber()
-	duration: number;
+	duration: number
 
 	@IsString()
-	country: string;
+	country: string
 }
 
 export class CreateMovieDto {
 	@IsString()
-	poster: string;
+	poster: string
 
 	@IsString()
-	bigPoster: string;
+	bigPoster: string
 
 	@IsString()
-	title: string;
+	title: string
 
-	// @IsString()
-	// description: string;
+	@IsString()
+	description: string
 
 	@IsObject()
-	parameters?: Parameter;
+	parameters?: Parameter
 
 	@IsArray()
 	@IsString({ each: true })
-	genres: string[];
+	genres: string[]
 
 	@IsArray()
 	@IsString({ each: true })
-	actors: string[];
+	actors: string[]
 
 	@IsString()
-	videoUrl: string;
+	videoUrl: string
 
 	@IsString()
-	slug: string;
+	slug: string
 
-	// @IsBoolean()
-	isSendTelegram?: boolean;
+	@IsBoolean()
+	isSendTelegram?: boolean
 }

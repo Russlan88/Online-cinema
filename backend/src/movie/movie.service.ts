@@ -3,6 +3,7 @@ import { ModelType, DocumentType } from '@typegoose/typegoose/lib/types';
 import { Types } from 'mongoose';
 import { InjectModel } from 'nestjs-typegoose';
 import { TelegramService } from 'src/telegram/telegram.service';
+
 import { CreateMovieDto } from './dto/create-movie.dto';
 import { MovieModel } from './movie.model';
 
@@ -65,7 +66,7 @@ export class MovieService {
 			bigPoster: '',
 			actors: [],
 			genres: [],
-			// description: '',
+			description: '',
 			poster: '',
 			title: '',
 			videoUrl: '',
@@ -80,7 +81,7 @@ export class MovieService {
 		dto: CreateMovieDto
 	): Promise<DocumentType<MovieModel> | null> {
 		if (!dto.isSendTelegram) {
-			await this.sendNotification(dto);
+			await this.sendNotifications(dto);
 			dto.isSendTelegram = true;
 		}
 
@@ -105,18 +106,19 @@ export class MovieService {
 			.exec();
 	}
 
-	public async sendNotification(dto: CreateMovieDto) {
-		await this.telegramService.sendPhoto(
-			'https://static6.depositphotos.com/1003434/555/i/950/depositphotos_5551251-stock-photo-cinema.jpg'
-		);
-		const msg = `<b>${dto.title}</b>`;
+	/* Utilites */
+	async sendNotifications(dto: CreateMovieDto) {
+		if (process.env.NODE_ENV !== 'development')
+			await this.telegramService.sendPhoto(dto.poster);
+
+		const msg = `<b>${dto.title}</b>\n\n` + `${dto.description}\n\n`;
 
 		await this.telegramService.sendMessage(msg, {
 			reply_markup: {
 				inline_keyboard: [
 					[
 						{
-							url: 'https://okkio.tv/movie/free-guy',
+							url: 'https://okko.tv/movie/free-guy',
 							text: '🍿 Go to watch',
 						},
 					],

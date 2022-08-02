@@ -1,18 +1,18 @@
-import { Prop } from '@typegoose/typegoose';
-import { Base, TimeStamps } from '@typegoose/typegoose/lib/defaultClasses';
+import { prop } from '@typegoose/typegoose'
+import { Base, TimeStamps } from '@typegoose/typegoose/lib/defaultClasses'
 
 export interface GenreModel extends Base {}
 
 export class GenreModel extends TimeStamps {
-	@Prop()
-	name: string;
+	@prop()
+	name: string
 
-	@Prop()
-	slug: string;
+	@prop({ unique: true })
+	slug: string
 
-	@Prop()
-	description: string;
+	@prop()
+	description: string
 
-	@Prop()
-	icon: string;
+	@prop()
+	icon: string
 }

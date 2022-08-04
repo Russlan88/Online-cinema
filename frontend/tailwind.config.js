@@ -1,11 +1,7 @@
-/**
- * @format
- * @type {import('tailwindcss').Config}
- */
-const colors = require('tailwindcss/colors');
-const plugin = require('tailwindcss/plugin');
+const colors = require('tailwindcss/colors')
+const plugin = require('tailwindcss/plugin')
 
-const primary = '#E30B13';
+const primary = '#E30B13'
 
 module.exports = {
 	content: [
@@ -31,6 +27,7 @@ module.exports = {
 				700: '#F5C521',
 			},
 		},
+
 		extend: {
 			spacing: {
 				0.5: '0.12rem',
@@ -133,7 +130,7 @@ module.exports = {
 						objectFit: 'cover',
 						pointerEvents: 'none',
 					},
-				});
+				})
 		}),
 	],
-};
+}

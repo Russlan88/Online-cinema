@@ -6,10 +6,10 @@ import {
 	Post,
 	UsePipes,
 	ValidationPipe,
-} from '@nestjs/common';
-import { RefreshTokenDto } from './dto/refreshToken.dto';
-import { AuthDto } from './dto/auth.dto';
-import { AuthService } from './auth.service';
+} from '@nestjs/common'
+import { RefreshTokenDto } from './dto/refreshToken.dto'
+import { AuthDto } from './dto/auth.dto'
+import { AuthService } from './auth.service'
 
 @Controller('auth')
 export class AuthController {
@@ -18,26 +18,26 @@ export class AuthController {
 	@UsePipes(new ValidationPipe())
 	@HttpCode(200)
 	@Post('login')
-	public async login(@Body() data: AuthDto) {
-		return this.AuthService.login(data);
+	async login(@Body() data: AuthDto) {
+		return this.AuthService.login(data)
 	}
 
 	@UsePipes(new ValidationPipe())
 	@HttpCode(200)
 	@Post('login/access-token')
-	public async getNewTokens(@Body() data: RefreshTokenDto) {
-		return this.AuthService.getNewTokens(data);
+	async getNewTokens(@Body() data: RefreshTokenDto) {
+		return this.AuthService.getNewTokens(data)
 	}
 
 	@UsePipes(new ValidationPipe())
 	@Post('register')
-	public async register(@Body() dto: AuthDto) {
-		const oldUser = await this.AuthService.findByEmail(dto.email);
+	async register(@Body() dto: AuthDto) {
+		const oldUser = await this.AuthService.findByEmail(dto.email)
 		if (oldUser)
 			throw new BadRequestException(
 				'User with this email is already in the system'
-			);
+			)
 
-		return this.AuthService.register(dto);
+		return this.AuthService.register(dto)
 	}
 }

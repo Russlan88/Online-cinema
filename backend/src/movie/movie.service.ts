@@ -1,11 +1,11 @@
-import { Injectable } from '@nestjs/common';
-import { ModelType, DocumentType } from '@typegoose/typegoose/lib/types';
-import { Types } from 'mongoose';
-import { InjectModel } from 'nestjs-typegoose';
-import { TelegramService } from 'src/telegram/telegram.service';
+import { Injectable } from '@nestjs/common'
+import { ModelType, DocumentType } from '@typegoose/typegoose/lib/types'
+import { Types } from 'mongoose'
+import { InjectModel } from 'nestjs-typegoose'
+import { TelegramService } from 'src/telegram/telegram.service'
 
-import { CreateMovieDto } from './dto/create-movie.dto';
-import { MovieModel } from './movie.model';
+import { CreateMovieDto } from './dto/create-movie.dto'
+import { MovieModel } from './movie.model'
 
 @Injectable()
 export class MovieService {
@@ -15,7 +15,7 @@ export class MovieService {
 	) {}
 
 	async getAll(searchTerm?: string): Promise<DocumentType<MovieModel>[]> {
-		let options = {};
+		let options = {}
 
 		if (searchTerm) {
 			options = {
@@ -24,7 +24,7 @@ export class MovieService {
 						title: new RegExp(searchTerm, 'i'),
 					},
 				],
-			};
+			}
 		}
 
 		return this.movieModel
@@ -32,33 +32,33 @@ export class MovieService {
 			.select('-updatedAt -__v')
 			.sort({ createdAt: 'desc' })
 			.populate('genres actors')
-			.exec();
+			.exec()
 	}
 
 	async bySlug(slug: string): Promise<DocumentType<MovieModel>> {
-		return this.movieModel.findOne({ slug }).populate('genres actors').exec();
+		return this.movieModel.findOne({ slug }).populate('genres actors').exec()
 	}
 
 	async byActor(actorId: Types.ObjectId): Promise<DocumentType<MovieModel>[]> {
-		return this.movieModel.find({ actors: actorId }).exec();
+		return this.movieModel.find({ actors: actorId }).exec()
 	}
 
 	async byGenres(
 		genreIds: Types.ObjectId[]
 	): Promise<DocumentType<MovieModel>[]> {
-		return this.movieModel.find({ genres: { $in: genreIds } }).exec();
+		return this.movieModel.find({ genres: { $in: genreIds } }).exec()
 	}
 
 	async updateCountOpened(slug: string) {
 		return this.movieModel
 			.findOneAndUpdate({ slug }, { $inc: { countOpened: 1 } })
-			.exec();
+			.exec()
 	}
 
 	/* Admin area */
 
 	async byId(id: string): Promise<DocumentType<MovieModel>> {
-		return this.movieModel.findById(id).exec();
+		return this.movieModel.findById(id).exec()
 	}
 
 	async create(): Promise<Types.ObjectId> {
@@ -71,9 +71,9 @@ export class MovieService {
 			title: '',
 			videoUrl: '',
 			slug: '',
-		};
-		const movie = await this.movieModel.create(defaultValue);
-		return movie._id;
+		}
+		const movie = await this.movieModel.create(defaultValue)
+		return movie._id
 	}
 
 	async update(
@@ -81,15 +81,15 @@ export class MovieService {
 		dto: CreateMovieDto
 	): Promise<DocumentType<MovieModel> | null> {
 		if (!dto.isSendTelegram) {
-			await this.sendNotifications(dto);
-			dto.isSendTelegram = true;
+			await this.sendNotifications(dto)
+			dto.isSendTelegram = true
 		}
 
-		return this.movieModel.findByIdAndUpdate(id, dto, { new: true }).exec();
+		return this.movieModel.findByIdAndUpdate(id, dto, { new: true }).exec()
 	}
 
 	async delete(id: string): Promise<DocumentType<MovieModel> | null> {
-		return this.movieModel.findByIdAndDelete(id).exec();
+		return this.movieModel.findByIdAndDelete(id).exec()
 	}
 
 	async getMostPopular(): Promise<DocumentType<MovieModel>[]> {
@@ -97,21 +97,21 @@ export class MovieService {
 			.find({ countOpened: { $gt: 0 } })
 			.sort({ countOpened: -1 })
 			.populate('genres')
-			.exec();
+			.exec()
 	}
 
 	async updateRating(id: string, newRating: number) {
 		return this.movieModel
 			.findByIdAndUpdate(id, { rating: newRating }, { new: true })
-			.exec();
+			.exec()
 	}
 
 	/* Utilites */
 	async sendNotifications(dto: CreateMovieDto) {
 		if (process.env.NODE_ENV !== 'development')
-			await this.telegramService.sendPhoto(dto.poster);
+			await this.telegramService.sendPhoto(dto.poster)
 
-		const msg = `<b>${dto.title}</b>\n\n` + `${dto.description}\n\n`;
+		const msg = `<b>${dto.title}</b>\n\n` + `${dto.description}\n\n`
 
 		await this.telegramService.sendMessage(msg, {
 			reply_markup: {
@@ -124,6 +124,6 @@ export class MovieService {
 					],
 				],
 			},
-		});
+		})
 	}
 }

@@ -1,17 +1,18 @@
-import { Injectable } from '@nestjs/common';
-import { getTelegramConfig } from 'src/config/telegram.config';
-import { Telegraf } from 'telegraf';
-import { ExtraReplyMessage } from 'telegraf/typings/telegram-types';
-import { Telegram } from './telegram.interface';
+import { Injectable } from '@nestjs/common'
+import { Telegraf } from 'telegraf'
+
+import { getTelegramConfig } from 'src/config/telegram.config'
+import { ITelegramOptions } from './telegram.interface'
+import { ExtraReplyMessage } from 'telegraf/typings/telegram-types'
 
 @Injectable()
 export class TelegramService {
-	bot: Telegraf;
-	options: Telegram;
+	bot: Telegraf
+	options: ITelegramOptions
 
 	constructor() {
-		this.options = getTelegramConfig();
-		this.bot = new Telegraf(this.options.token);
+		this.options = getTelegramConfig()
+		this.bot = new Telegraf(this.options.token)
 	}
 
 	async sendMessage(
@@ -22,7 +23,7 @@ export class TelegramService {
 		await this.bot.telegram.sendMessage(chatId, msg, {
 			parse_mode: 'HTML',
 			...options,
-		});
+		})
 	}
 
 	async sendPhoto(
@@ -30,14 +31,8 @@ export class TelegramService {
 		msg?: string,
 		chatId: string = this.options.chatId
 	) {
-		await this.bot.telegram.sendPhoto(
-			chatId,
-			photo,
-			msg
-				? {
-						caption: msg,
-				  }
-				: {}
-		);
+		await this.bot.telegram.sendPhoto(chatId, photo, {
+			caption: msg,
+		})
 	}
 }

@@ -4,62 +4,64 @@ import {
 	Delete,
 	Get,
 	HttpCode,
+	NotFoundException,
 	Param,
 	Post,
 	Put,
 	Query,
 	UsePipes,
 	ValidationPipe,
-} from '@nestjs/common';
-import { Auth } from 'src/auth/decorators/Auth.decorator';
-import { GenreService } from 'src/genre/genre.service';
-import { IdValidationPipe } from 'src/pipes/id.validation.pipe';
-import { ActorService } from './actor.service';
-import { ActorDto } from './dto/actor.dto';
+} from '@nestjs/common'
+import { Auth } from 'src/auth/decorators/Auth.decorator'
+import { IdValidationPipe } from 'src/pipes/id.validation.pipe'
+import { ActorService } from './actor.service'
+import { CreateActorDto } from './dto/create-actor.dto'
 
 @Controller('actors')
 export class ActorController {
 	constructor(private readonly actorService: ActorService) {}
 
-	@Get('by-slug/:slug')
-	public async bySlug(@Param('slug') slug: string) {
-		return this.actorService.bySlug(slug);
+	@Get()
+	async getAll(@Query('searchTerm') searchTerm?: string) {
+		return this.actorService.getAll(searchTerm)
 	}
 
-	@Get()
-	public async getAll(@Query('searchTerm') searchTerm?: string) {
-		return this.actorService.getAll(searchTerm);
-	}
-	@Get(':id')
-	@Auth('admin')
-	public async get(@Param('id', IdValidationPipe) id: string) {
-		return this.actorService.byId(id);
+	@Get('by-slug/:slug')
+	async bySlug(@Param('slug') slug: string) {
+		return this.actorService.bySlug(slug)
 	}
 
 	@UsePipes(new ValidationPipe())
 	@Post()
 	@HttpCode(200)
 	@Auth('admin')
-	public async create() {
-		return this.actorService.create();
+	async create() {
+		return this.actorService.create()
+	}
+
+	@Get(':id')
+	@Auth('admin')
+	async get(@Param('id', IdValidationPipe) id: string) {
+		return this.actorService.byId(id)
 	}
 
 	@UsePipes(new ValidationPipe())
 	@Put(':id')
 	@HttpCode(200)
 	@Auth('admin')
-	public async update(
+	async update(
 		@Param('id', IdValidationPipe) id: string,
-		@Body() dto: ActorDto
+		@Body() dto: CreateActorDto
 	) {
-		const actor = await this.actorService.update(id, dto);
-		return actor;
+		const updateActor = await this.actorService.update(id, dto)
+		if (!updateActor) throw new NotFoundException('Actor not found')
+		return updateActor
 	}
 
 	@Delete(':id')
-	@HttpCode(200)
 	@Auth('admin')
-	public async delete(@Param('id', IdValidationPipe) id: string) {
-		return this.actorService.delete(id);
+	async delete(@Param('id', IdValidationPipe) id: string) {
+		const deletedDoc = await this.actorService.delete(id)
+		if (!deletedDoc) throw new NotFoundException('Actor not found')
 	}
 }

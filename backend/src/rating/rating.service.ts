@@ -1,10 +1,10 @@
-import { BadRequestException, Injectable } from '@nestjs/common';
-import { ModelType } from '@typegoose/typegoose/lib/types';
-import { InjectModel } from 'nestjs-typegoose';
-import { Types } from 'mongoose';
-import { RatingModel } from './rating.model';
-import { SetRatingDto } from './dto/set-rating.dto';
-import { MovieService } from 'src/movie/movie.service';
+import { Injectable } from '@nestjs/common'
+import { ModelType } from '@typegoose/typegoose/lib/types'
+import { InjectModel } from 'nestjs-typegoose'
+import { Types } from 'mongoose'
+import { RatingModel } from './rating.model'
+import { SetRatingDto } from './dto/set-rating.dto'
+import { MovieService } from 'src/movie/movie.service'
 
 @Injectable()
 export class RatingService {
@@ -14,21 +14,20 @@ export class RatingService {
 		private readonly movieService: MovieService
 	) {}
 
-	async averageRatingbyMovie(movieId: Types.ObjectId | string | number) {
+	async averageRatingbyMovie(movieId: Types.ObjectId | string) {
 		const ratingsMovie: RatingModel[] = await this.ratingModel
 			.aggregate()
 			.match({ movieId: new Types.ObjectId(movieId) })
-			.exec();
+			.exec()
 
 		return (
 			ratingsMovie.reduce((acc, item) => acc + item.value, 0) /
 			ratingsMovie.length
-		);
+		)
 	}
 
 	async setRating(userId: Types.ObjectId, dto: SetRatingDto) {
-		const { movieId, value } = dto;
-		if (!movieId) throw new BadRequestException('Id is invalid');
+		const { movieId, value } = dto
 
 		const newRating = await this.ratingModel
 			.findOneAndUpdate(
@@ -40,12 +39,13 @@ export class RatingService {
 				},
 				{ upsert: true, new: true, setDefaultsOnInsert: true }
 			)
-			.exec();
+			.exec()
 
-		const averageRating = await this.averageRatingbyMovie(movieId);
-		await this.movieService.updateRating(movieId, averageRating);
+		const averageRating = await this.averageRatingbyMovie(movieId)
 
-		return newRating;
+		await this.movieService.updateRating(movieId, averageRating)
+
+		return newRating
 	}
 
 	async getMovieValueByUser(movieId: Types.ObjectId, userId: Types.ObjectId) {
@@ -53,6 +53,6 @@ export class RatingService {
 			.findOne({ movieId, userId })
 			.select('value')
 			.exec()
-			.then((data) => (data ? data.value : 0));
+			.then((data) => (data ? data.value : 0))
 	}
 }

@@ -1,8 +1,7 @@
-import { Telegram } from 'src/telegram/telegram.interface';
+import { ITelegramOptions } from 'src/telegram/telegram.interface'
 
-const subscribers = ['xxxxxxxxx', 'xxxxxxx', 'xxxxxxx'];
-
-export const getTelegramConfig = (): Telegram => ({
-	chatId: subscribers.toString(),
-	token: 'xxxxxxxxxxxxxxxxxxxxxx',
-});
+export const getTelegramConfig = (): ITelegramOptions => ({
+	// https://api.telegram.org/bot5070807616:AAGHWhiD9qTMz68gz6yccEXGRtY8x0ohOb0/getUpdates - for get chatId
+	chatId: '',
+	token: '',
+})

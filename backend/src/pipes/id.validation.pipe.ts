@@ -2,16 +2,16 @@ import {
 	ArgumentMetadata,
 	BadRequestException,
 	PipeTransform,
-} from '@nestjs/common';
-import { Types } from 'mongoose';
+} from '@nestjs/common'
+import { Types } from 'mongoose'
 
 export class IdValidationPipe implements PipeTransform {
-	transform(value: string, meta: ArgumentMetadata) {
-		if (meta.type !== 'param') return value;
+	transform(val: string, meta: ArgumentMetadata) {
+		if (meta.type !== 'param') return val
 
-		if (!Types.ObjectId.isValid(value))
-			throw new BadRequestException('Invalid fromat id');
+		if (!Types.ObjectId.isValid(val))
+			throw new BadRequestException('Invalid format Id')
 
-		return value;
+		return val
 	}
 }
